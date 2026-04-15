@@ -1,6 +1,7 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useFilter } from '../../hooks/useFilters';
 import type { Vehicular_types } from '../../types/vehicular.types';
+import DetailChequeoDialog from './DetailChequeoDialog';
 
 interface PropsFooter {
     datos: Vehicular_types[];
@@ -11,6 +12,7 @@ function TableArqueo({ datos, setFecha }: PropsFooter) {
 
 
     const { filteredPDV, searchfecha, setSearchFecha } = useFilter(datos);
+    const [selectedInspection, setSelectedInspection] = useState<Vehicular_types | null>(null);
 
     useEffect(() => {
         setFecha(searchfecha);
@@ -41,6 +43,7 @@ function TableArqueo({ datos, setFecha }: PropsFooter) {
                                 <th className="px-6 py-4">Nombre</th>
                                 <th className="px-6 py-4">Cédula</th>
                                 <th className="px-6 py-4">Kilometraje</th>
+                                <th className="px-6 py-4 text-center">Detalle</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100 bg-white/70">
@@ -52,11 +55,20 @@ function TableArqueo({ datos, setFecha }: PropsFooter) {
                                         <td className="px-6 py-4 text-sm text-slate-700">{item.nombre}</td>
                                         <td className="px-6 py-4 text-sm text-slate-700">{item.cedula}</td>
                                         <td className="px-6 py-4 text-sm text-slate-700">{item.kilometraje}</td>
+                                        <td className="px-6 py-4 text-center">
+                                            <button
+                                                type="button"
+                                                className="rounded-full bg-sky-100 px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-sky-700 transition hover:bg-sky-200"
+                                                onClick={() => setSelectedInspection(item)}
+                                            >
+                                                Ver
+                                            </button>
+                                        </td>
                                     </tr>
                                 ))
                             ) : (
                                 <tr>
-                                    <td className="px-6 py-10 text-center text-sm text-slate-500" colSpan={5}>
+                                    <td className="px-6 py-10 text-center text-sm text-slate-500" colSpan={6}>
                                         No hay registros para esta fecha.
                                     </td>
                                 </tr>
@@ -64,7 +76,14 @@ function TableArqueo({ datos, setFecha }: PropsFooter) {
                         </tbody>
                     </table>
                 </div>
+
             </div>
+
+            <DetailChequeoDialog
+                isOpen={selectedInspection !== null}
+                item={selectedInspection}
+                onClose={() => setSelectedInspection(null)}
+            />
         </>
     )
 }
