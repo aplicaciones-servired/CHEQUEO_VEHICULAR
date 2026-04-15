@@ -40,7 +40,7 @@ export interface SeguimientoLoginPayload {
 }
 
 export async function registerLoginSeguimiento(payload: SeguimientoLoginPayload): Promise<void> {
-  await axios.post(`${API_URL}/SeguimientoLogin`, payload);
+  await axios.post(`${API_URL}/Seguimiento/Login`, payload);
 }
 
 export function getApiBaseUrl(): string {
