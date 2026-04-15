@@ -47,9 +47,7 @@ export default function LoginForm({ onSuccess }: LoginFormProps) {
                 nombre: response.user?.names ?? response.user?.name ?? trimmedUsername,
                 cedula: response.user?.document ?? trimmedUsername,
                 empresa: response.company ?? response.user?.company ?? 'Multired',
-            }).catch((error) => {
-                console.error('Error al registrar seguimiento de login:', error);
-            });
+            }).catch(() => undefined);
 
             onSuccess({
                 token,
