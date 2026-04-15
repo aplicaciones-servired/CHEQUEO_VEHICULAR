@@ -7,7 +7,7 @@ interface cheuqueoPagi {
   totalClients: number;
 }
 
-export function useChequeoVehicular(zona: string, fecha?: string) {
+export function useChequeoVehicular(zona: string, fecha?: string, enabled = true) {
   const [data, setData] = useState<Vehicular_types[]>([]);
   const [message, setMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -20,9 +20,15 @@ export function useChequeoVehicular(zona: string, fecha?: string) {
   const [totalClients, setTotalClients] = useState();
 
   useEffect(() => {
+    if (!enabled) {
+      setLoading(false);
+      return;
+    }
+
     const fetchData = async (): Promise<void> => {
+      setLoading(true);
       try {
-          let url = `${API_URL}/Vehicular/${zona}&page=${page}&pageSize=${pageSize}`;
+          let url = `${API_URL}/Vehicular/${encodeURIComponent(zona)}?page=${page}&pageSize=${pageSize}`;
         if (fecha) {
           url += `&fecha=${fecha}`;
         }
@@ -45,7 +51,7 @@ export function useChequeoVehicular(zona: string, fecha?: string) {
       }
     };
     void fetchData();
-  }, [zona, fecha, page, pageSize]);
+  }, [enabled, zona, fecha, page, pageSize]);
 
   const total = Math.ceil(state.totalClients / pageSize);
 
