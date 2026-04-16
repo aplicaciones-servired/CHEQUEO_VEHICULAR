@@ -7,7 +7,7 @@ interface cheuqueoPagi {
   totalClients: number;
 }
 
-export function useChequeoVehicular(zona: string, fecha?: string, enabled = true) {
+export function useChequeoVehicular(zona: string, fecha?: string, enabled = true, token?: string) {
   const [data, setData] = useState<Vehicular_types[]>([]);
   const [message, setMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -33,7 +33,13 @@ export function useChequeoVehicular(zona: string, fecha?: string, enabled = true
           url += `&fecha=${fecha}`;
         }
 
-        const response = await axios.get(url);
+        const response = await axios.get(url, {
+          headers: token
+            ? {
+                Authorization: `Bearer ${token}`,
+              }
+            : undefined,
+        });
         setData(response.data.data);
         setMessage(response.data.message);
         setTotalClients(response.data.count);

@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { normalizeCompanyName } from '../util/company';
 
 export interface AuthSession {
   token?: string;
@@ -24,7 +25,7 @@ export const useAuthStore = create<AuthStore>()(
       setAuth: (nextSession, nextCompany) => {
         set({
           session: nextSession,
-          company: nextCompany?.trim() || DEFAULT_COMPANY,
+          company: normalizeCompanyName(nextCompany),
         });
       },
       clearAuth: () => {

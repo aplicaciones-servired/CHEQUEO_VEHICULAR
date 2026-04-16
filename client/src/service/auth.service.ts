@@ -39,8 +39,14 @@ export interface SeguimientoLoginPayload {
   empresa: string;
 }
 
-export async function registerLoginSeguimiento(payload: SeguimientoLoginPayload): Promise<void> {
-  await axios.post(`${API_URL}/Seguimiento/Login`, payload);
+export async function registerLoginSeguimiento(payload: SeguimientoLoginPayload, token?: string): Promise<void> {
+  await axios.post(`${API_URL}/SeguimientoLogin`, payload, {
+    headers: token
+      ? {
+          Authorization: `Bearer ${token}`,
+        }
+      : undefined,
+  });
 }
 
 export function getApiBaseUrl(): string {

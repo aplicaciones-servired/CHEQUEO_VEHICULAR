@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { login, registerLoginSeguimiento } from '../../service/auth.service';
 import { useToast } from '../toast/ToastProvider';
+import { normalizeCompanyName } from '../../util/company';
 
 interface LoginFormProps {
     onSuccess: (session: { token?: string; username: string; raw: unknown }, company?: string) => void;
@@ -43,17 +44,19 @@ export default function LoginForm({ onSuccess }: LoginFormProps) {
                 duration: 2200,
             });
 
+            const normalizedCompany = normalizeCompanyName(response.company ?? response.user?.company);
+
             void registerLoginSeguimiento({
                 nombre: response.user?.names ?? response.user?.name ?? trimmedUsername,
-                cedula: response.user?.document ?? trimmedUsername,
-                empresa: response.company ?? response.user?.company ?? 'Multired',
-            }).catch(() => undefined);
+                cedula: String(response.user?.document ?? trimmedUsername).trim(),
+                empresa: normalizedCompany,
+            }, token).catch(() => undefined);
 
             onSuccess({
                 token,
                 username: response.user?.username ?? trimmedUsername,
                 raw: response,
-            }, typeof response.company === 'string' ? response.company : undefined);
+            }, normalizedCompany);
         } catch (requestError) {
             dismiss(toastId);
             showError({

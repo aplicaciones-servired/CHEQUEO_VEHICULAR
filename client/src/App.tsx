@@ -13,7 +13,12 @@ function App() {
   const setAuth = useAuthStore((state) => state.setAuth);
   const clearAuth = useAuthStore((state) => state.clearAuth);
   const [fecha, setFecha] = useState("");
-  const { data, loading, error, message, total, handlePageChange, page } = useChequeoVehicular(company, fecha, Boolean(session));
+  const { data, loading, error, message, total, handlePageChange, page } = useChequeoVehicular(
+    company,
+    fecha,
+    Boolean(session),
+    session?.token,
+  );
   const lastErrorRef = useRef<string | null>(null);
   const lastMessageRef = useRef<string | null>(null);
 
