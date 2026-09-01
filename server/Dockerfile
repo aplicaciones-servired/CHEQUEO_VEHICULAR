@@ -6,7 +6,7 @@ COPY . .
 
 RUN npm install -g pnpm@latest
 
-RUN pnpm approve-builds esbuild && pnpm install
+RUN PNPM_IGNORED_BUILDS="" pnpm install
 
 EXPOSE 3000
 
