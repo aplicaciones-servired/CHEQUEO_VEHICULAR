@@ -6,7 +6,7 @@ COPY . .
 
 RUN npm install -g pnpm@latest
 
-RUN pnpm install
+RUN echo "ignored-builds=[]" > .npmrc && pnpm install
 
 EXPOSE 3000
 
