@@ -1,12 +1,14 @@
-FROM node:lts-slim
+FROM node:18-alpine
 
 WORKDIR /app
 
 COPY . .
 
-RUN npm install -g pnpm@latest
+# Compilar TypeScript
+RUN npm run build
 
-RUN echo "ignored-builds=[]" > .npmrc && pnpm install
+# Construir la aplicación
+RUN npm run build
 
 EXPOSE 3000
 
