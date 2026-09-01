@@ -6,7 +6,7 @@ COPY . .
 
 RUN npm install -g pnpm@latest
 
-RUN pnpm approve-builds --yes && pnpm install
+RUN pnpm install
 
 EXPOSE 3000
 
