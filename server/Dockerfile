@@ -6,8 +6,7 @@ COPY . .
 
 RUN npm install -g pnpm@latest
 
-RUN pnpm install
-RUN pnpm approve-builds esbuild
+RUN pnpm approve-builds esbuild && pnpm install
 
 EXPOSE 3000
 
